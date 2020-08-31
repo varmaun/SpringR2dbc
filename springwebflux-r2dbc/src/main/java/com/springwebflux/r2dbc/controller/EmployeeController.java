@@ -1,5 +1,7 @@
 package com.springwebflux.r2dbc.controller;
 
+import java.time.Duration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,8 +31,7 @@ public class EmployeeController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@ResponseBody
 	public Mono<Employee> create(@RequestBody Employee e) {
-		Mono<Employee> emp;
- 		emp = employeeService.create(e);
+		Mono<Employee> emp = employeeService.create(e);
 		return emp;
 	}
 
@@ -52,7 +53,7 @@ public class EmployeeController {
 	@ResponseBody
 	public Flux<Employee> findAll() {
 		Flux<Employee> emps = employeeService.findAll();
-		return emps;
+		return emps.delayElements(Duration.ofSeconds(2));
 	}
 
 	@PutMapping(value = "/update")

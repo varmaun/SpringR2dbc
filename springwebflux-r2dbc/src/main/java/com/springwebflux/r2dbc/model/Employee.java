@@ -1,6 +1,8 @@
 package com.springwebflux.r2dbc.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -16,11 +18,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("employee")
-public class Employee /* implements Persistable<Employee> */ {
+public class Employee implements Persistable<Integer> {
 	@Id
 	@Column("id")
 	@JsonProperty
-	//@GeneratedValue(strategy=GenerationType.)
+	// @GeneratedValue(strategy=GenerationType.)
 	private Integer id;
 	@Column("name")
 	@JsonProperty
@@ -29,13 +31,14 @@ public class Employee /* implements Persistable<Employee> */ {
 	@JsonProperty
 	private int salary;
 
-	/*
-	 * @Transient private boolean newEmployee;
-	 * 
-	 * @Override
-	 * 
-	 * @Transient public boolean isNew() { return this.newEmployee || id == null; }
-	 * 
-	 * public Employee getId() { this.newEmployee = true; return this; }
-	 */
+	@Override
+	public Integer getId() {
+		return this.id;
+	}
+
+	@Override
+	public boolean isNew() {
+		return true;
+	}
+
 }
